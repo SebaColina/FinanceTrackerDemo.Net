@@ -4,7 +4,7 @@ using FinanceTrackerBackend.Services;
 namespace FinanceTrackerBackend.Controllers
 {
     [ApiController]
-    [Route("api/[controller]")]  // This sets the base route for the controller
+    [Route("api/Transactions")]  // This sets the base route for the controller
     public class FinanceTrackerController : ControllerBase
     {
         private readonly ITransactionService _transactionService;
@@ -14,32 +14,54 @@ namespace FinanceTrackerBackend.Controllers
             _transactionService = transactionService;
         }
 
-        // GET: api/FinanceTracker
-        [HttpGet]  // This action will respond to GET requests at "api/FinanceTracker"
-        public ActionResult<IEnumerable<TransactionDto>> GetFinanceTracker()
+        // GET: api/Transactions
+        [HttpGet]  // This action will respond to GET requests at "api/Transactions"
+        public ActionResult<IEnumerable<TransactionDto>> GetTransactions()
         {
-            var transactions = new List<TransactionDto>(); // _transactionService.GetTransactions(); Assume this gets populated
+            var transactions = _transactionService.GetAllTransactions();
             return Ok(transactions);
         }
 
-        // GET: api/financeTracker/{id}
-        [HttpGet("{id}")]  // This action will respond to GET requests at "api/financeTracker/{id}"
-        public ActionResult<TransactionDto> GetFinanceTrackerById(int id)
+        // GET: api/Transactions/{id}
+        [HttpGet("{id}")]  // This action will respond to GET requests at "api/transaction/{id}"
+        public ActionResult<TransactionDto> GetTransactionById(int id)
         {
-            var forecast = new TransactionDto(); // Assume this is retrieved by id
-            if (forecast == null)
+            var transaction = _transactionService.GetTransactionById(id);
+            if (transaction == null)
             {
                 return NotFound();
             }
-            return Ok(forecast);
+            return Ok(transaction);
         }
 
-        // POST: api/financeTracker
-        [HttpPost]  // This action will respond to POST requests at "api/financeTracker"
-        public ActionResult<TransactionDto> CreateFinanceTracker(TransactionDto forecastDto)
+        // PUT: api/Transactions
+        [HttpPut]  // This action will respond to PUT requests at "api/Transactions"
+        public ActionResult<bool> PutTransaction(TransactionDto transactionToUpdate)
         {
-            // Assume this creates a new forecast and returns it
-            return CreatedAtAction(nameof(GetFinanceTrackerById), new { id = forecastDto.Id }, forecastDto);
+            var result = _transactionService.UpdateTransaction(transactionToUpdate);
+            if(result == false){
+                return NotFound();
+            }
+            return Ok(result);
+        }
+
+        // POST: api/Transactions
+        [HttpPost]  // This action will respond to POST requests at "api/Transactions"
+        public ActionResult<TransactionDto> CreateTransaction(TransactionDto transactionDto)
+        {
+            return _transactionService.CreateTransaction(transactionDto);
+        }
+
+        // DELETE: api/Transactions/{id}
+        [HttpDelete("{id}")]  // This action will respond to DELETE requests at "api/transaction/{id}"
+        public ActionResult<TransactionDto> DeleteTransaction(int id)
+        {
+            var transaction = _transactionService.DeleteTransaction(id);
+            if (transaction == null)
+            {
+                return NotFound();
+            }
+            return Ok(transaction);
         }
     }
 }
