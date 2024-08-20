@@ -18,7 +18,7 @@ services:
     depends_on:
       db:
         condition: service_healthy
-
+      
   frontend:
     build:
       context: ./finance_tracker_frontend
@@ -47,10 +47,11 @@ services:
       - db_data:/var/lib/mysql
       - ./init.sql:/docker-entrypoint-initdb.d/init.sql:ro
     healthcheck:
-      test: ["CMD-SHELL", "mysqladmin ping -h localhost -p$MYSQL_ROOT_PASSWORD"]
+      test: ["CMD-SHELL", "mysqladmin ping -h localhost -uroot -pexamplepassword"]
       interval: 10s
       timeout: 5s
       retries: 5
+
 
 networks:
   app-network:
