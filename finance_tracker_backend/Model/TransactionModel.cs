@@ -6,7 +6,7 @@ public class Transaction
     public int Id { get; set; }
 
     [Required]
-    public decimal Amount { get; set; }
+    public int Amount { get; set; }
 
     [Required]
     public DateTime Date { get; set; }

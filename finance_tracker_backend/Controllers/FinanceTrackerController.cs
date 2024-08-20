@@ -18,7 +18,7 @@ namespace FinanceTrackerBackend.Controllers
         [HttpGet]  // This action will respond to GET requests at "api/FinanceTracker"
         public ActionResult<IEnumerable<TransactionDto>> GetFinanceTracker()
         {
-            var transactions = new List<TransactionDto>(); // _transactionService.GetTransactions(); Assume this gets populated
+            var transactions = _transactionService.GetTransactions(); // new List<TransactionDto>(); // _transactionService.GetTransactions(); Assume this gets populated
             return Ok(transactions);
         }
 

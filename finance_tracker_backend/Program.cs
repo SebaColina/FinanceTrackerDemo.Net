@@ -10,11 +10,14 @@ builder.Services.AddControllers();  // Register the controllers
 //builder.Services.AddEndpointsApiExplorer();
 //builder.Services.AddSwaggerGen();  // Add Swagger generator
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+    options.UseMySql(
+        builder.Configuration.GetConnectionString("DefaultConnection"),
+        new MySqlServerVersion(new Version(8, 0, 39)) // Specify your MySQL version
+    ));
 
 var app = builder.Build();
 
-app.UseHttpsRedirection();
+//app.UseHttpsRedirection();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())

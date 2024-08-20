@@ -14,6 +14,11 @@ public class TransactionRepository : ITransactionRepository
 
     public IEnumerable<Transaction> GetAllTransactions()
     {
-        return _context.Transactions.ToList();
+        if (_context == null)
+        {
+            throw new InvalidOperationException("Database context is null.");
+        }
+        var result =  _context.Transactions.ToList();
+        return result;
     }
 }
