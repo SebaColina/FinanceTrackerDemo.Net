@@ -7,7 +7,8 @@ namespace FinanceTrackerBackend.Services
         IEnumerable<TransactionDto> GetAllTransactions();
         TransactionDto GetTransactionById(int id);
         bool UpdateTransaction(TransactionDto transaction);
-        bool CreateTransaction(TransactionDto transaction);
+        TransactionDto CreateTransaction(TransactionDto transaction);
+        TransactionDto DeleteTransaction(int id);
     }
 
     public class TransactionService : ITransactionService
@@ -54,7 +55,7 @@ namespace FinanceTrackerBackend.Services
             }
         }
 
-        public bool CreateTransaction(TransactionDto transactionDto)
+        public TransactionDto CreateTransaction(TransactionDto transactionDto)
         {
             var newTransaction = new Transaction
             {
@@ -65,7 +66,33 @@ namespace FinanceTrackerBackend.Services
                 Category = transactionDto.Category,
                 UserId = transactionDto.UserId
             };
-            return _transactionRepository.CreateTransaction(newTransaction);
+            Transaction createdTransaction = _transactionRepository.CreateTransaction(newTransaction);
+            var createdTransactionDto = new TransactionDto
+            {
+                Id = createdTransaction.Id,
+                Amount = createdTransaction.Amount,
+                Date = createdTransaction.Date,
+                Description = createdTransaction.Description,
+                Category = createdTransaction.Category,
+                UserId = createdTransaction.UserId
+            };
+            return createdTransactionDto;
+        }
+
+        public TransactionDto DeleteTransaction(int id)
+        {
+            var transactionToDelete = _transactionRepository.GetTransactionById(id);
+            var deletedTransaction = _transactionRepository.DeleteTransaction(transactionToDelete);
+            var deletedTransactionDto = new TransactionDto
+            {
+                Id = deletedTransaction.Id,
+                Amount = deletedTransaction.Amount,
+                Date = deletedTransaction.Date,
+                Description = deletedTransaction.Description,
+                Category = deletedTransaction.Category,
+                UserId = deletedTransaction.UserId
+            };
+            return deletedTransactionDto;
         }
     }
 }

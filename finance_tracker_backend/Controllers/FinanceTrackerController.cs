@@ -47,9 +47,21 @@ namespace FinanceTrackerBackend.Controllers
 
         // POST: api/Transactions
         [HttpPost]  // This action will respond to POST requests at "api/Transactions"
-        public ActionResult<bool> CreateTransaction(TransactionDto transactionDto)
+        public ActionResult<TransactionDto> CreateTransaction(TransactionDto transactionDto)
         {
             return _transactionService.CreateTransaction(transactionDto);
+        }
+
+        // DELETE: api/Transactions/{id}
+        [HttpDelete("{id}")]  // This action will respond to DELETE requests at "api/transaction/{id}"
+        public ActionResult<TransactionDto> DeleteTransaction(int id)
+        {
+            var transaction = _transactionService.DeleteTransaction(id);
+            if (transaction == null)
+            {
+                return NotFound();
+            }
+            return Ok(transaction);
         }
     }
 }
