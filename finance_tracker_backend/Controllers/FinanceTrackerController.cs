@@ -47,10 +47,9 @@ namespace FinanceTrackerBackend.Controllers
 
         // POST: api/Transactions
         [HttpPost]  // This action will respond to POST requests at "api/Transactions"
-        public ActionResult<TransactionDto> CreateTransaction(TransactionDto transactionDto)
+        public ActionResult<bool> CreateTransaction(TransactionDto transactionDto)
         {
-            // Assume this creates a new Transaction and returns it
-            return CreatedAtAction(nameof(GetTransactionById), new { id = transactionDto.Id }, transactionDto);
+            return _transactionService.CreateTransaction(transactionDto);
         }
     }
 }

@@ -3,6 +3,7 @@ public interface ITransactionRepository
     IEnumerable<Transaction> GetAllTransactions();
     Transaction GetTransactionById(int id);
     bool UpdateTransaction(Transaction transaction);
+    bool CreateTransaction(Transaction transaction);
 }
 
 public class TransactionRepository : ITransactionRepository
@@ -38,7 +39,22 @@ public class TransactionRepository : ITransactionRepository
 
     public bool UpdateTransaction(Transaction transaction)
     {
+        if (_context == null)
+        {
+            throw new InvalidOperationException("Database context is null.");
+        }
         _context.Transactions.Update(transaction);
         return _context.SaveChanges() > 0;
+    }
+
+    public bool CreateTransaction(Transaction transaction)
+    {
+        if (_context == null)
+        {
+            throw new InvalidOperationException("Database context is null.");
+        }
+        _context.Transactions.Add(transaction);
+        _context.SaveChanges();
+        return true;
     }
 }

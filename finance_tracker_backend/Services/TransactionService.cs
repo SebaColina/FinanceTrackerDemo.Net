@@ -7,6 +7,7 @@ namespace FinanceTrackerBackend.Services
         IEnumerable<TransactionDto> GetAllTransactions();
         TransactionDto GetTransactionById(int id);
         bool UpdateTransaction(TransactionDto transaction);
+        bool CreateTransaction(TransactionDto transaction);
     }
 
     public class TransactionService : ITransactionService
@@ -51,6 +52,20 @@ namespace FinanceTrackerBackend.Services
             }else{
                 return false;
             }
+        }
+
+        public bool CreateTransaction(TransactionDto transactionDto)
+        {
+            var newTransaction = new Transaction
+            {
+                Id = transactionDto.Id,
+                Amount = transactionDto.Amount,
+                Date = transactionDto.Date,
+                Description = transactionDto.Description,
+                Category = transactionDto.Category,
+                UserId = transactionDto.UserId
+            };
+            return _transactionRepository.CreateTransaction(newTransaction);
         }
     }
 }
