@@ -1,41 +1,27 @@
-import React, { useEffect, useState } from 'react';
-import './App.css';
+import React from 'react';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import Home from './screens/Home';
+import Transactions from './screens/Transactions';
+import AddTransaction from './screens/AddTransaction';
+import EditTransaction from './screens/EditTransaction';
+import Reports from './screens/Reports';
+import Settings from './screens/Settings';
+import Navbar from './components/Navbar';
 
 function App() {
-  const [transactions, setTransactions] = useState([]);
-
-  useEffect(() => {
-    // Fetch data from the .NET backend API
-    fetch('http://localhost:8080/api/transactions') // Adjust the URL based on your API endpoint
-      .then((response) => response.json())
-      .then((data) => setTransactions(data))
-      .catch((error) => console.error('Error fetching data:', error));
-  }, []);
-
   return (
-    <div className="App">
-      <header className="App-header">
-        <h1>Finance Tracker</h1>
-        <table>
-          <thead>
-            <tr>
-              <th>Date</th>
-              <th>Description</th>
-              <th>Amount</th>
-            </tr>
-          </thead>
-          <tbody>
-            {transactions.map((transaction, index) => (
-              <tr key={index}>
-                <td>{transaction.date}</td>
-                <td>{transaction.description}</td>
-                <td>{transaction.amount}</td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </header>
-    </div>
+    <Router>
+      <div className="App">
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/transactions" element={<Transactions />} />
+          <Route path="/add-transaction" element={<AddTransaction />} />
+          <Route path="/edit-transaction/:id" element={<EditTransaction />} />
+          <Route path="/reports" element={<Reports />} />
+          <Route path="/settings" element={<Settings />} />
+        </Routes>
+      </div>
+    </Router>
   );
 }
 
