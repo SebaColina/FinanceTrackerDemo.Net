@@ -4,7 +4,7 @@ using FinanceTrackerBackend.Services;
 namespace FinanceTrackerBackend.Controllers
 {
     [ApiController]
-    [Route("api/Transactions")]  // This sets the base route for the controller
+    [Route("api/transactions")]  // This sets the base route for the controller
     public class FinanceTrackerController : ControllerBase
     {
         private readonly ITransactionService _transactionService;
