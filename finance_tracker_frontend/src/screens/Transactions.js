@@ -3,13 +3,24 @@ import { Link } from 'react-router-dom';
 
 function Transactions() {
   const [transactions, setTransactions] = useState([]);
+  const [loading, setLoading] = useState(true); // Add loading state
 
   useEffect(() => {
     fetch('http://localhost:8080/api/transactions')
       .then(response => response.json())
-      .then(data => setTransactions(data))
-      .catch(error => console.error('Error fetching transactions:', error));
+      .then(data => {
+        setTransactions(data);
+        setLoading(false); // Set loading to false after data is fetched
+      })
+      .catch(error => {
+        console.error('Error fetching transactions:', error);
+        setLoading(false); // Set loading to false even if there's an error
+      });
   }, []);
+
+  if (loading) {
+    return <div>Loading...</div>; // Display loading message while fetching data
+  }
 
   return (
     <div>
