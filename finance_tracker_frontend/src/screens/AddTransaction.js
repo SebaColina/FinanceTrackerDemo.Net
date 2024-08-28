@@ -4,20 +4,26 @@ import { useNavigate } from 'react-router-dom';
 function AddTransaction() {
   const [transaction, setTransaction] = useState({
     description: '',
-    amount: 0
+    amount: 0,
+    category: '',
+    userId: '',
   });
   const navigate = useNavigate();
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // Logic to add a new transaction
-    fetch('http://localhost:8080/api/transactions', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(transaction)
-    }).then(() => navigate('/transactions'));
+    if(transaction.amount === 0 || transaction.category === '' || transaction.description === '' || transaction.userId === ''){
+      console.log('Fields missing');
+    }else{
+      // Logic to add a new transaction
+      fetch('http://localhost:8080/api/transactions', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(transaction)
+      }).then(() => navigate('/transactions'));
+    }
   };
 
   return (
@@ -34,6 +40,18 @@ function AddTransaction() {
         placeholder="Amount"
         value={transaction.amount}
         onChange={(e) => setTransaction({ ...transaction, amount: e.target.value })}
+      />
+      <input
+        type="text"
+        placeholder="Category"
+        value={transaction.category}
+        onChange={(e) => setTransaction({ ...transaction, category: e.target.value })}
+      />
+      <input
+        type="text"
+        placeholder="UserId"
+        value={transaction.userId}
+        onChange={(e) => setTransaction({ ...transaction, userId: e.target.value })}
       />
       <button type="submit">Add Transaction</button>
     </form>

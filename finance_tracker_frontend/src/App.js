@@ -12,6 +12,7 @@ function App() {
   return (
     <Router>
       <div className="App">
+      <Navbar /> {/* Add Navbar here */}
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/transactions" element={<Transactions />} />
