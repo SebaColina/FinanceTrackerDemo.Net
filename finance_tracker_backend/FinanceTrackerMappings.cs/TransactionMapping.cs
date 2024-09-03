@@ -5,5 +5,6 @@ public class TransactionMapping : Profile
     public TransactionMapping()
     {
         CreateMap<Transaction, TransactionDto>();
+        CreateMap<TransactionDto, Transaction>();
     }
 }

@@ -10,18 +10,23 @@ function EditTransaction() {
     // Fetch transaction data by ID
     fetch(`http://localhost:8080/api/transactions/${id}`)
       .then(response => response.json())
-      .then(data => setTransaction(data))
+      .then(data => {
+        console.warn('Fetched transaction data:', data); // Print the response data here
+        setTransaction(data); // Set the state with the fetched data
+      })
       .catch(error => console.error('Error fetching transaction:', error));
   }, [id]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    console.warn("HEREEEEEEEEEEEEEEEEE",transaction);
     // Logic to update the transaction
-    fetch(`http://localhost:8080/api/transactions/${id}`, {
+    fetch(`http://localhost:8080/api/transactions/`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json'
       },
+      mode: 'cors',
       body: JSON.stringify(transaction)
     }).then(() => navigate('/transactions'));
   };
@@ -35,6 +40,16 @@ function EditTransaction() {
         type="text"
         value={transaction.description}
         onChange={(e) => setTransaction({ ...transaction, description: e.target.value })}
+      />
+      <input
+        type="text"
+        value={transaction.category}
+        onChange={(e) => setTransaction({ ...transaction, category: e.target.value })}
+      />
+      <input
+        type="text"
+        value={transaction.userId}
+        onChange={(e) => setTransaction({ ...transaction, userId: e.target.value })}
       />
       <input
         type="number"
