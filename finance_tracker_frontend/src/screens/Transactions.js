@@ -22,6 +22,15 @@ function Transactions() {
     return <div>Loading...</div>; // Display loading message while fetching data
   }
 
+  const handleDelete = (id) => {
+    fetch(`http://localhost:8080/api/transactions/${id}`, {
+      method: "Delete",
+      mode: 'cors',
+    })
+      .then(response => response.json())
+      .catch(error => console.error('Error fetching transaction:', error));
+  };
+
   return (
     <div>
       <h2>Transactions</h2>
@@ -31,6 +40,7 @@ function Transactions() {
             <Link to={`/edit-transaction/${transaction.id}`}>
               {transaction.description} - ${transaction.amount}
             </Link>
+            <button style={{ marginLeft: '10px' }} onClick={(t) => handleDelete(transaction.id)}>Delete</button>
           </li>
         ))}
       </ul>
